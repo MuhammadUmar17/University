@@ -1,6 +1,7 @@
 from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import uuid
 
 
 # Create your models here.
@@ -35,7 +36,7 @@ class Project(models.Model):
     end_date = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.DateTimeField(auto_now=True)
-    # id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
 
     def __str__(self):
         return self.name
@@ -46,6 +47,7 @@ class Project(models.Model):
 
 # -------------------------------------User Roles---------------------------------------
 class Role(models.Model):
+    
     name = models.CharField(max_length=200, null= True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.DateTimeField(auto_now=True)
@@ -59,11 +61,11 @@ class Role(models.Model):
 
 # -------------------------------Priorities-------------------------
 
-class Prioroty(models.Model):
+class Priority(models.Model):
     name = models.CharField(max_length=200, null=True)
-    css_style = models.CharField(max_length=100, null=True)
+    css_style = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -76,6 +78,7 @@ class Prioroty(models.Model):
 # -------------------------------Statuses------------------------------
 
 class Status(models.Model):
+  
     name = models.CharField(max_length=200, null=True)
     css_style = models.CharField(max_length=100, null= True)
     created_by = models.DateTimeField(auto_now_add=True)
@@ -92,9 +95,10 @@ class Status(models.Model):
 # -------------------------------Project Role ------------------------------------
 
 class Project_role(models.Model):
+    
     Project_id = models.ForeignKey(Project, on_delete= models.SET_NULL, null=True)
     user_id = models.ForeignKey(User, on_delete= models.SET_NULL, null=True)
-    role_id = models.ForeignKey(Role, on_delete= models.SET_NULL, null=True)
+    role_id = models.ManyToManyField(Role, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -105,11 +109,12 @@ class Project_role(models.Model):
 # ---------------------------------Tasks--------------------------------
 
 class Task(models.Model):
+   
     project_id = models.ForeignKey(Project, on_delete= models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     description = models.TextField(max_length=500, null=True)
     assignee_id = models.ForeignKey(User, on_delete= models.SET_NULL, null=True)
-    priority_id = models.ForeignKey(Prioroty, on_delete= models.SET_NULL, null=True)
+    priority_id = models.ForeignKey(Priority, on_delete= models.SET_NULL, null=True)
     status_id = models.ForeignKey(Status, on_delete= models.SET_NULL, null= True)
     estimate_hours = models.FloatField(null=True)
     progress_hours = models.FloatField(null=True)
@@ -126,6 +131,7 @@ class Task(models.Model):
 # -------------------------------Comments----------------------------------
 
 class Comment(models.Model):
+    
     user_id = models.ForeignKey(User, on_delete= models.CASCADE)
     task_id = models.ForeignKey(Task, on_delete= models.CASCADE)
     description = models.TextField(max_length=500, null=True)
