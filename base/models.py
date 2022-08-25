@@ -7,6 +7,20 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
+# ----------------------------User Accounts---------------------------------------
+class User(AbstractUser):
+    # name = models.CharField(max_length=200, null=True)
+    email = models.EmailField(unique=True)
+    email_verified = models.BooleanField(default=False)
+    remember_token = models.CharField(max_length=100, null=True)
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # updated_by = models.DateTimeField(auto_now=True)
+
+    USERNAME_FIELd = 'email'
+    REQUIRED_FIELDS = []
+
+
 # ------------------------------Projects-------------------------------------
 class Project(models.Model):
     name = models.CharField(max_length=200, null=True)
@@ -35,6 +49,7 @@ class Role(models.Model):
 
 
 # -------------------------------Priorities-------------------------
+
 class Priority(models.Model):
     name = models.CharField(max_length=200, null=True)
     css_style = models.CharField(max_length=200, null=True)
@@ -46,6 +61,7 @@ class Priority(models.Model):
 
 
 # -------------------------------Statuses------------------------------
+
 class Status(models.Model):
     name = models.CharField(max_length=200, null=True)
     css_style = models.CharField(max_length=100, null=True)
@@ -57,18 +73,17 @@ class Status(models.Model):
 
 
 # -------------------------------Project Role ------------------------------------
+
 class Project_role(models.Model):
-    project_id = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
+    Project_id = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
     user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     role_id = models.ManyToManyField(Role, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.project_id} - {self.user_id}"
-
 
 # ---------------------------------Tasks--------------------------------
+
 class Task(models.Model):
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
@@ -87,6 +102,7 @@ class Task(models.Model):
 
 
 # -------------------------------Comments----------------------------------
+
 class Comment(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     task_id = models.ForeignKey(Task, on_delete=models.CASCADE)

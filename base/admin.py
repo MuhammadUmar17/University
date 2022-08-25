@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Task, Project, Comment, Priority
 
 # Register your models here.
