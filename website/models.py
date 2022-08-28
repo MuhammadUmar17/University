@@ -9,17 +9,17 @@ from django.contrib.auth.models import User
 
 
 # ----------------------------User Accounts---------------------------------------
-class User(AbstractUser):
-    # name = models.CharField(max_length=200, null=True)
-    email = models.EmailField(unique=True)
-    email_verified = models.BooleanField(default=False)
-    remember_token = models.CharField(max_length=100, null=True)
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_by = models.DateTimeField(auto_now=True)
-
-    USERNAME_FIELd = 'email'
-    REQUIRED_FIELDS = []
-
+# class User(AbstractUser):
+#     # name = models.CharField(max_length=200, null=True)
+#     email = models.EmailField(unique=True)
+#     email_verified = models.BooleanField(default=False)
+#     remember_token = models.CharField(max_length=100, null=True)
+#     # created_at = models.DateTimeField(auto_now_add=True)
+#     # updated_by = models.DateTimeField(auto_now=True)
+#
+#     USERNAME_FIELd = 'email'
+#     REQUIRED_FIELDS = []
+#
 
 # ------------------------------Projects-------------------------------------
 class Project(models.Model):
